@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, Location } from 'react-router-dom';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
@@ -13,6 +13,7 @@ import { fetchIngredients } from '../../services/ingredients/slice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
+  const location = useLocation();
   const dispatch = useDispatch();
   const orderData = useSelector((state) => state.orders.currentOrder);
   const loading = useSelector((state) => state.orders.loading);
@@ -98,5 +99,9 @@ export const OrderInfo: FC = () => {
     );
   }
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  const inModal = Boolean(
+    (location.state as { background?: Location })?.background
+  );
+
+  return <OrderInfoUI orderInfo={orderInfo} inModal={inModal} />;
 };
