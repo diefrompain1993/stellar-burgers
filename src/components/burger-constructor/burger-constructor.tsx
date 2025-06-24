@@ -8,7 +8,7 @@ import { clearConstructor } from '../../services/constructor/slice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
-  const { bun, ingredients } = useSelector((state) => state.constructor);
+  const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
   const constructorItems: ConstructorItems = { bun, ingredients };
 
   const { orderRequest, createdOrder } = useSelector((state) => state.orders);
