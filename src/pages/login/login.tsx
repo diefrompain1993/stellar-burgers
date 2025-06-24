@@ -20,7 +20,8 @@ export const Login: FC = () => {
       .then(() => {
         dispatch(resetError());
         navigate(from, { replace: true });
-      });
+      })
+      .catch(() => {});
   };
 
   return (

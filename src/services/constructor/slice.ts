@@ -30,17 +30,19 @@ const constructorSlice = createSlice({
     },
     moveIngredientUp: (state, action: PayloadAction<number>) => {
       const index = action.payload;
-      if (index <= 0 || index >= state.ingredients.length) return;
-      const item = state.ingredients[index];
-      state.ingredients.splice(index, 1);
-      state.ingredients.splice(index - 1, 0, item);
+      if (index > 0 && index < state.ingredients.length) {
+        const item = state.ingredients[index];
+        state.ingredients.splice(index, 1);
+        state.ingredients.splice(index - 1, 0, item);
+      }
     },
     moveIngredientDown: (state, action: PayloadAction<number>) => {
       const index = action.payload;
-      if (index < 0 || index >= state.ingredients.length - 1) return;
-      const item = state.ingredients[index];
-      state.ingredients.splice(index, 1);
-      state.ingredients.splice(index + 1, 0, item);
+      if (index >= 0 && index < state.ingredients.length - 1) {
+        const item = state.ingredients[index];
+        state.ingredients.splice(index, 1);
+        state.ingredients.splice(index + 1, 0, item);
+      }
     },
     clearConstructor: (state) => {
       state.bun = null;
