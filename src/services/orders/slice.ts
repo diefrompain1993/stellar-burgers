@@ -59,6 +59,7 @@ const ordersSlice = createSlice({
   reducers: {
     clearCreatedOrder: (state) => {
       state.createdOrder = null;
+      state.orderRequest = false;
     },
     setFeeds: (state, action: PayloadAction<TOrdersData>) => {
       state.feeds = action.payload;

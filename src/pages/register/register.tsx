@@ -19,7 +19,8 @@ export const Register: FC = () => {
       .then(() => {
         dispatch(resetError());
         navigate('/', { replace: true });
-      });
+      })
+      .catch(() => {});
   };
 
   return (
