@@ -89,6 +89,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<TUser>) => {
         state.loading = false;
