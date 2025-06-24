@@ -8,6 +8,7 @@ import {
   TLoginData,
   TRegisterData
 } from '@api';
+import { setCookie, deleteCookie } from '../../utils/cookie';
 import { TUser } from '@utils-types';
 
 export const fetchUser = createAsyncThunk('user/fetch', async () => {
@@ -19,6 +20,8 @@ export const registerUser = createAsyncThunk(
   'user/register',
   async (data: TRegisterData) => {
     const res = await registerUserApi(data);
+    localStorage.setItem('refreshToken', res.refreshToken);
+    setCookie('accessToken', res.accessToken);
     return res.user;
   }
 );
@@ -27,12 +30,16 @@ export const loginUser = createAsyncThunk(
   'user/login',
   async (data: TLoginData) => {
     const res = await loginUserApi(data);
+    localStorage.setItem('refreshToken', res.refreshToken);
+    setCookie('accessToken', res.accessToken);
     return res.user;
   }
 );
 
 export const logout = createAsyncThunk('user/logout', async () => {
   await logoutApi();
+  localStorage.removeItem('refreshToken');
+  deleteCookie('accessToken');
 });
 
 export const updateUser = createAsyncThunk(
