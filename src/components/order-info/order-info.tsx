@@ -6,7 +6,8 @@ import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   fetchOrderInfo,
-  clearCurrentOrder
+  clearCurrentOrder,
+  setCurrentOrder
 } from '../../services/orders/slice';
 import { fetchIngredients } from '../../services/ingredients/slice';
 
@@ -16,6 +17,8 @@ export const OrderInfo: FC = () => {
   const orderData = useSelector((state) => state.orders.currentOrder);
   const loading = useSelector((state) => state.orders.loading);
   const error = useSelector((state) => state.orders.error);
+  const feedsOrders = useSelector((state) => state.orders.feeds?.orders);
+  const userOrders = useSelector((state) => state.orders.userOrders);
   const ingredients: TIngredient[] = useSelector(
     (state) => state.ingredients.items
   );
@@ -27,14 +30,23 @@ export const OrderInfo: FC = () => {
   }, [dispatch, ingredients.length]);
 
   useEffect(() => {
-    if (number && (!orderData || orderData.number !== Number(number))) {
-      dispatch(fetchOrderInfo(Number(number)));
+    if (number) {
+      const num = Number(number);
+      const fromStore =
+        feedsOrders?.find((o) => o.number === num) ||
+        userOrders.find((o) => o.number === num);
+
+      if (fromStore) {
+        dispatch(setCurrentOrder(fromStore));
+      } else if (!orderData || orderData.number !== num) {
+        dispatch(fetchOrderInfo(num));
+      }
     }
 
     return () => {
       dispatch(clearCurrentOrder());
     };
-  }, [dispatch, number, orderData]);
+  }, [dispatch, number, orderData, feedsOrders, userOrders]);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

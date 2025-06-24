@@ -66,6 +66,11 @@ const ordersSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    setCurrentOrder: (state, action: PayloadAction<TOrder>) => {
+      state.currentOrder = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
     setFeeds: (state, action: PayloadAction<TOrdersData>) => {
       state.feeds = action.payload;
     },
@@ -128,7 +133,12 @@ const ordersSlice = createSlice({
   }
 });
 
-export const { clearCreatedOrder, clearCurrentOrder, setFeeds, setUserOrders } =
-  ordersSlice.actions;
+export const {
+  clearCreatedOrder,
+  clearCurrentOrder,
+  setCurrentOrder,
+  setFeeds,
+  setUserOrders
+} = ordersSlice.actions;
 
 export default ordersSlice.reducer;
