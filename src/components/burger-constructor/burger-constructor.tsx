@@ -1,15 +1,12 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { ConstructorItems } from '../ui/burger-constructor/type';
+import { useSelector } from '../../services/store';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
+  const { bun, ingredients } = useSelector((state) => state.constructor);
+  const constructorItems: ConstructorItems = { bun, ingredients };
 
   const orderRequest = false;
 
@@ -29,8 +26,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
-  return null;
 
   return (
     <BurgerConstructorUI
