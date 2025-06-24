@@ -28,11 +28,15 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   'user/login',
-  async (data: TLoginData) => {
-    const res = await loginUserApi(data);
-    localStorage.setItem('refreshToken', res.refreshToken);
-    setCookie('accessToken', res.accessToken);
-    return res.user;
+  async (data: TLoginData, { rejectWithValue }) => {
+    try {
+      const res = await loginUserApi(data);
+      localStorage.setItem('refreshToken', res.refreshToken);
+      setCookie('accessToken', res.accessToken);
+      return res.user;
+    } catch (err) {
+      return rejectWithValue((err as { message?: string }).message);
+    }
   }
 );
 
@@ -90,9 +94,13 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
       })
-      .addCase(loginUser.rejected, (state) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = 'Ошибка авторизации';
+        const msg = action.payload as string | undefined;
+        state.error =
+          msg === 'email or password are incorrect'
+            ? 'Неправильный пароль'
+            : 'Ошибка авторизации';
       })
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
