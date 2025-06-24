@@ -15,10 +15,10 @@ export const OrderInfo: FC = () => {
   );
 
   useEffect(() => {
-    if (!orderData && number) {
+    if (number && orderData?.number !== Number(number)) {
       dispatch(fetchOrderInfo(Number(number)));
     }
-  }, [dispatch, number, orderData]);
+  }, [dispatch, number, orderData?.number]);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

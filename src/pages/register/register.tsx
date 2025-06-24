@@ -8,23 +8,30 @@ export const Register: FC = () => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [localError, setLocalError] = useState<string | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const error = useSelector((state) => state.user.error);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    if (!userName || !email || !password) {
+      setLocalError('Заполните все поля');
+      return;
+    }
+    setLocalError(null);
     dispatch(registerUser({ email, name: userName, password }))
       .unwrap()
       .then(() => {
         dispatch(resetError());
         navigate('/', { replace: true });
-      });
+      })
+      .catch(() => {});
   };
 
   return (
     <RegisterUI
-      errorText={error || ''}
+      errorText={localError || error || ''}
       email={email}
       userName={userName}
       password={password}
