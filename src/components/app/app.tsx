@@ -3,7 +3,8 @@ import {
   Routes,
   Route,
   useLocation,
-  Location
+  Location,
+  useParams
 } from 'react-router-dom';
 import {
   ConstructorPage,
@@ -21,6 +22,15 @@ import styles from './app.module.css';
 
 import { AppHeader, ProtectedRoute } from '@components';
 import { OrderInfo, IngredientDetails, Modal } from '@components';
+
+const OrderInfoModal = () => {
+  const { number } = useParams<{ number: string }>();
+  return (
+    <Modal onClose={() => window.history.back()} title={`#${number}`}>
+      <OrderInfo />
+    </Modal>
+  );
+};
 
 const App = () => {
   const location = useLocation();
@@ -66,14 +76,7 @@ const App = () => {
       </Routes>
       {background && (
         <Routes>
-          <Route
-            path='/feed/:number'
-            element={
-              <Modal onClose={() => window.history.back()} title=''>
-                <OrderInfo />
-              </Modal>
-            }
-          />
+          <Route path='/feed/:number' element={<OrderInfoModal />} />
           <Route
             path='/ingredients/:id'
             element={
@@ -87,15 +90,7 @@ const App = () => {
           />
           <Route
             path='/profile/orders/:number'
-            element={
-              <ProtectedRoute
-                element={
-                  <Modal onClose={() => window.history.back()} title=''>
-                    <OrderInfo />
-                  </Modal>
-                }
-              />
-            }
+            element={<ProtectedRoute element={<OrderInfoModal />} />}
           />
         </Routes>
       )}
