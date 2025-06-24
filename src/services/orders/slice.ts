@@ -60,6 +60,9 @@ const ordersSlice = createSlice({
     clearCreatedOrder: (state) => {
       state.createdOrder = null;
     },
+    clearCurrentOrder: (state) => {
+      state.currentOrder = null;
+    },
     setFeeds: (state, action: PayloadAction<TOrdersData>) => {
       state.feeds = action.payload;
     },
@@ -113,7 +116,11 @@ const ordersSlice = createSlice({
   }
 });
 
-export const { clearCreatedOrder, setFeeds, setUserOrders } =
-  ordersSlice.actions;
+export const {
+  clearCreatedOrder,
+  clearCurrentOrder,
+  setFeeds,
+  setUserOrders
+} = ordersSlice.actions;
 
 export default ordersSlice.reducer;
