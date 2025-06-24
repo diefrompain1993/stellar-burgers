@@ -12,8 +12,8 @@ const initialState: ConstructorState = {
   ingredients: []
 };
 
-const constructorSlice = createSlice({
-  name: 'constructor',
+const burgerConstructorSlice = createSlice({
+  name: 'burgerConstructor',
   initialState,
   reducers: {
     addIngredient: (state, action: PayloadAction<TIngredient>) => {
@@ -57,6 +57,6 @@ export const {
   moveIngredientUp,
   moveIngredientDown,
   clearConstructor
-} = constructorSlice.actions;
+} = burgerConstructorSlice.actions;
 
-export default constructorSlice.reducer;
+export default burgerConstructorSlice.reducer;

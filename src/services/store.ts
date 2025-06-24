@@ -5,14 +5,14 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 import ingredientsReducer from './ingredients/slice';
-import constructorReducer from './constructor/slice';
+import constructorReducer from './burger-constructor/slice';
 import userReducer from './user/slice';
 import ordersReducer from './orders/slice';
 
 const store = configureStore({
   reducer: {
     ingredients: ingredientsReducer,
-    constructor: constructorReducer,
+    burgerConstructor: constructorReducer,
     user: userReducer,
     orders: ordersReducer
   },

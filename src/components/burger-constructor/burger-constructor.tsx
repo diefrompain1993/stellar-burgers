@@ -4,11 +4,11 @@ import { BurgerConstructorUI } from '@ui';
 import { ConstructorItems } from '../ui/burger-constructor/type';
 import { useDispatch, useSelector } from '../../services/store';
 import { createOrder, clearCreatedOrder } from '../../services/orders/slice';
-import { clearConstructor } from '../../services/constructor/slice';
+import { clearConstructor } from '../../services/burger-constructor/slice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
-  const { bun, ingredients } = useSelector((state) => state.constructor);
+  const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
   const constructorItems: ConstructorItems = { bun, ingredients };
 
   const { orderRequest, createdOrder } = useSelector((state) => state.orders);
