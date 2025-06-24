@@ -40,7 +40,16 @@ export const Profile: FC = () => {
         email: formValue.email,
         password: formValue.password || undefined
       })
-    );
+    )
+      .unwrap()
+      .then((updated) => {
+        setFormValue({
+          name: updated.name,
+          email: updated.email,
+          password: ''
+        });
+      })
+      .catch(() => {});
   };
 
   const handleCancel = (e: SyntheticEvent) => {

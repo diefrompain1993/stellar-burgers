@@ -108,8 +108,17 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = 'Ошибка регистрации';
       })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateUser.fulfilled, (state, action: PayloadAction<TUser>) => {
+        state.loading = false;
         state.user = action.payload;
+      })
+      .addCase(updateUser.rejected, (state) => {
+        state.loading = false;
+        state.error = 'Ошибка обновления профиля';
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
