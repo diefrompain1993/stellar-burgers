@@ -4,7 +4,7 @@ import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
-import { fetchOrderInfo } from '../../services/orders/slice';
+import { fetchOrderInfo, clearCurrentOrder } from '../../services/orders/slice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
@@ -15,10 +15,16 @@ export const OrderInfo: FC = () => {
   );
 
   useEffect(() => {
-    if (!orderData && number) {
+    if (number && orderData?.number !== Number(number)) {
       dispatch(fetchOrderInfo(Number(number)));
     }
-  }, [dispatch, number, orderData]);
+  }, [dispatch, number, orderData?.number]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearCurrentOrder());
+    };
+  }, [dispatch]);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
