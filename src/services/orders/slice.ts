@@ -1,8 +1,4 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  PayloadAction
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import {
   getFeedsApi,
   getOrdersApi,
@@ -103,10 +99,13 @@ const ordersSlice = createSlice({
         state.orderRequest = true;
         state.createdOrder = null;
       })
-      .addCase(createOrder.fulfilled, (state, action: PayloadAction<TOrder>) => {
-        state.orderRequest = false;
-        state.createdOrder = action.payload;
-      })
+      .addCase(
+        createOrder.fulfilled,
+        (state, action: PayloadAction<TOrder>) => {
+          state.orderRequest = false;
+          state.createdOrder = action.payload;
+        }
+      )
       .addCase(createOrder.rejected, (state) => {
         state.orderRequest = false;
         state.error = 'Не удалось оформить заказ';
@@ -114,6 +113,7 @@ const ordersSlice = createSlice({
   }
 });
 
-export const { clearCreatedOrder, setFeeds, setUserOrders } = ordersSlice.actions;
+export const { clearCreatedOrder, setFeeds, setUserOrders } =
+  ordersSlice.actions;
 
 export default ordersSlice.reducer;

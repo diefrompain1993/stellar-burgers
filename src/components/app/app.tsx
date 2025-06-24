@@ -77,7 +77,10 @@ const App = () => {
           <Route
             path='/ingredients/:id'
             element={
-              <Modal onClose={() => window.history.back()} title='Детали ингредиента'>
+              <Modal
+                onClose={() => window.history.back()}
+                title='Детали ингредиента'
+              >
                 <IngredientDetails />
               </Modal>
             }

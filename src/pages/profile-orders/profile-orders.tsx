@@ -15,7 +15,9 @@ export const ProfileOrders: FC = () => {
     const wsUrl =
       process.env.BURGER_API_URL?.replace('https', 'wss').replace('/api', '') +
       `/orders?token=${localStorage.getItem('refreshToken')}`;
-    const socket = new WebSocket(wsUrl || 'wss://norma.nomoreparties.space/orders');
+    const socket = new WebSocket(
+      wsUrl || 'wss://norma.nomoreparties.space/orders'
+    );
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
       if (data.success) {

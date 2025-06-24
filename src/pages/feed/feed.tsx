@@ -15,7 +15,9 @@ export const Feed: FC = () => {
     const wsUrl =
       process.env.BURGER_API_URL?.replace('https', 'wss').replace('/api', '') +
       '/orders/all';
-    const socket = new WebSocket(wsUrl || 'wss://norma.nomoreparties.space/orders/all');
+    const socket = new WebSocket(
+      wsUrl || 'wss://norma.nomoreparties.space/orders/all'
+    );
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
       if (data.success) {
