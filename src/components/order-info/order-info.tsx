@@ -1,24 +1,53 @@
 import { FC, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, Location } from 'react-router-dom';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
-import { fetchOrderInfo } from '../../services/orders/slice';
+import {
+  fetchOrderInfo,
+  clearCurrentOrder,
+  setCurrentOrder
+} from '../../services/orders/slice';
+import { fetchIngredients } from '../../services/ingredients/slice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
+  const location = useLocation();
   const dispatch = useDispatch();
   const orderData = useSelector((state) => state.orders.currentOrder);
+  const loading = useSelector((state) => state.orders.loading);
+  const error = useSelector((state) => state.orders.error);
+  const feedsOrders = useSelector((state) => state.orders.feeds?.orders);
+  const userOrders = useSelector((state) => state.orders.userOrders);
   const ingredients: TIngredient[] = useSelector(
     (state) => state.ingredients.items
   );
 
   useEffect(() => {
-    if (!orderData && number) {
-      dispatch(fetchOrderInfo(Number(number)));
+    if (!ingredients.length) {
+      dispatch(fetchIngredients());
     }
-  }, [dispatch, number, orderData]);
+  }, [dispatch, ingredients.length]);
+
+  useEffect(() => {
+    if (number) {
+      const num = Number(number);
+      const fromStore =
+        feedsOrders?.find((o) => o.number === num) ||
+        userOrders.find((o) => o.number === num);
+
+      if (fromStore) {
+        dispatch(setCurrentOrder(fromStore));
+      } else if (!orderData || orderData.number !== num) {
+        dispatch(fetchOrderInfo(num));
+      }
+    }
+
+    return () => {
+      dispatch(clearCurrentOrder());
+    };
+  }, [dispatch, number, orderData, feedsOrders, userOrders]);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
@@ -62,9 +91,17 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  if (!orderInfo) {
-    return <Preloader />;
+  if (!orderInfo || loading) {
+    return error ? (
+      <p className='text text_type_main-default p-10'>{error}</p>
+    ) : (
+      <Preloader />
+    );
   }
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  const inModal = Boolean(
+    (location.state as { background?: Location })?.background
+  );
+
+  return <OrderInfoUI orderInfo={orderInfo} inModal={inModal} />;
 };

@@ -1,4 +1,11 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import {
+  FC,
+  SyntheticEvent,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useEffect
+} from 'react';
 import { LoginUI } from '@ui-pages';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
@@ -11,6 +18,20 @@ export const Login: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const error = useSelector((state) => state.user.error);
+
+  useEffect(() => {
+    dispatch(resetError());
+  }, [dispatch]);
+
+  const handleEmailChange: Dispatch<SetStateAction<string>> = (value) => {
+    setEmail((prev) => (typeof value === 'function' ? value(prev) : value));
+    if (error) dispatch(resetError());
+  };
+
+  const handlePasswordChange: Dispatch<SetStateAction<string>> = (value) => {
+    setPassword((prev) => (typeof value === 'function' ? value(prev) : value));
+    if (error) dispatch(resetError());
+  };
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -28,9 +49,9 @@ export const Login: FC = () => {
     <LoginUI
       errorText={error || ''}
       email={email}
-      setEmail={setEmail}
+      setEmail={handleEmailChange}
       password={password}
-      setPassword={setPassword}
+      setPassword={handlePasswordChange}
       handleSubmit={handleSubmit}
     />
   );

@@ -59,6 +59,17 @@ const ordersSlice = createSlice({
   reducers: {
     clearCreatedOrder: (state) => {
       state.createdOrder = null;
+      state.orderRequest = false;
+    },
+    clearCurrentOrder: (state) => {
+      state.currentOrder = null;
+      state.loading = false;
+      state.error = null;
+    },
+    setCurrentOrder: (state, action: PayloadAction<TOrder>) => {
+      state.currentOrder = action.payload;
+      state.loading = false;
+      state.error = null;
     },
     setFeeds: (state, action: PayloadAction<TOrdersData>) => {
       state.feeds = action.payload;
@@ -92,9 +103,18 @@ const ordersSlice = createSlice({
       .addCase(
         fetchOrderInfo.fulfilled,
         (state, action: PayloadAction<TOrder>) => {
+          state.loading = false;
           state.currentOrder = action.payload;
         }
       )
+      .addCase(fetchOrderInfo.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchOrderInfo.rejected, (state) => {
+        state.loading = false;
+        state.error = 'Не удалось загрузить заказ';
+      })
       .addCase(createOrder.pending, (state) => {
         state.orderRequest = true;
         state.createdOrder = null;
@@ -113,7 +133,12 @@ const ordersSlice = createSlice({
   }
 });
 
-export const { clearCreatedOrder, setFeeds, setUserOrders } =
-  ordersSlice.actions;
+export const {
+  clearCreatedOrder,
+  clearCurrentOrder,
+  setCurrentOrder,
+  setFeeds,
+  setUserOrders
+} = ordersSlice.actions;
 
 export default ordersSlice.reducer;
