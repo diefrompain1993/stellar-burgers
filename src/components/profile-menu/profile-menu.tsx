@@ -14,7 +14,8 @@ export const ProfileMenu: FC = () => {
       .unwrap()
       .then(() => {
         navigate('/login', { replace: true });
-      });
+      })
+      .catch(() => {});
   };
 
   return <ProfileMenuUI handleLogout={handleLogout} pathname={pathname} />;

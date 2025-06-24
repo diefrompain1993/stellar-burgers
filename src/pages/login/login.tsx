@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useState, useEffect } from 'react';
 import { LoginUI } from '@ui-pages';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
@@ -11,6 +11,10 @@ export const Login: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const error = useSelector((state) => state.user.error);
+
+  useEffect(() => {
+    dispatch(resetError());
+  }, [dispatch]);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();

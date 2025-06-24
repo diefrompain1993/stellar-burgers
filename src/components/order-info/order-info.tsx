@@ -4,15 +4,27 @@ import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
-import { fetchOrderInfo, clearCurrentOrder } from '../../services/orders/slice';
+import {
+  fetchOrderInfo,
+  clearCurrentOrder
+} from '../../services/orders/slice';
+import { fetchIngredients } from '../../services/ingredients/slice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const dispatch = useDispatch();
   const orderData = useSelector((state) => state.orders.currentOrder);
+  const loading = useSelector((state) => state.orders.loading);
+  const error = useSelector((state) => state.orders.error);
   const ingredients: TIngredient[] = useSelector(
     (state) => state.ingredients.items
   );
+
+  useEffect(() => {
+    if (!ingredients.length) {
+      dispatch(fetchIngredients());
+    }
+  }, [dispatch, ingredients.length]);
 
   useEffect(() => {
     if (number && (!orderData || orderData.number !== Number(number))) {
@@ -66,8 +78,12 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  if (!orderInfo) {
-    return <Preloader />;
+  if (!orderInfo || loading) {
+    return error ? (
+      <p className='text text_type_main-default p-10'>{error}</p>
+    ) : (
+      <Preloader />
+    );
   }
 
   return <OrderInfoUI orderInfo={orderInfo} />;
