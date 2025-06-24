@@ -14,7 +14,12 @@ import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader, ProtectedRoute } from '@components';
-import { OrderInfo, IngredientDetails, Modal } from '@components';
+import {
+  OrderInfo,
+  OrderInfoModal,
+  IngredientDetails,
+  Modal
+} from '@components';
 
 const App = () => {
   const location = useLocation();
@@ -62,11 +67,7 @@ const App = () => {
         <Routes>
           <Route
             path='/feed/:number'
-            element={
-              <Modal onClose={() => window.history.back()} title=''>
-                <OrderInfo />
-              </Modal>
-            }
+            element={<OrderInfoModal onClose={() => window.history.back()} />}
           />
           <Route
             path='/ingredients/:id'
@@ -84,9 +85,7 @@ const App = () => {
             element={
               <ProtectedRoute
                 element={
-                  <Modal onClose={() => window.history.back()} title=''>
-                    <OrderInfo />
-                  </Modal>
+                  <OrderInfoModal onClose={() => window.history.back()} />
                 }
               />
             }
