@@ -12,7 +12,7 @@ import ordersReducer from './orders/slice';
 const store = configureStore({
   reducer: {
     ingredients: ingredientsReducer,
-    constructor: constructorReducer,
+    burgerConstructor: constructorReducer,
     user: userReducer,
     orders: ordersReducer
   },
