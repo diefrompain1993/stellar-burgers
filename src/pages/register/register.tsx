@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useState, Dispatch, SetStateAction } from 'react';
 import { RegisterUI } from '@ui-pages';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
@@ -30,18 +30,18 @@ export const Register: FC = () => {
       .catch(() => {});
   };
 
-  const handleEmailChange = (value: string) => {
-    setEmail(value);
+  const handleEmailChange: Dispatch<SetStateAction<string>> = (value) => {
+    setEmail((prev) => (typeof value === 'function' ? value(prev) : value));
     if (formError) setFormError('');
   };
 
-  const handlePasswordChange = (value: string) => {
-    setPassword(value);
+  const handlePasswordChange: Dispatch<SetStateAction<string>> = (value) => {
+    setPassword((prev) => (typeof value === 'function' ? value(prev) : value));
     if (formError) setFormError('');
   };
 
-  const handleUserNameChange = (value: string) => {
-    setUserName(value);
+  const handleUserNameChange: Dispatch<SetStateAction<string>> = (value) => {
+    setUserName((prev) => (typeof value === 'function' ? value(prev) : value));
     if (formError) setFormError('');
   };
 

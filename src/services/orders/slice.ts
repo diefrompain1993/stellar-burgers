@@ -116,11 +116,7 @@ const ordersSlice = createSlice({
   }
 });
 
-export const {
-  clearCreatedOrder,
-  clearCurrentOrder,
-  setFeeds,
-  setUserOrders
-} = ordersSlice.actions;
+export const { clearCreatedOrder, clearCurrentOrder, setFeeds, setUserOrders } =
+  ordersSlice.actions;
 
 export default ordersSlice.reducer;
