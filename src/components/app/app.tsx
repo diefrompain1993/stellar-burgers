@@ -37,7 +37,8 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const hasToken = getCookie('accessToken') || localStorage.getItem('refreshToken');
+    const hasToken =
+      getCookie('accessToken') || localStorage.getItem('refreshToken');
     if (hasToken) {
       dispatch(fetchUser());
     } else {
