@@ -9,9 +9,7 @@ export const Feed: FC = () => {
   const { feeds, loading } = useSelector((state) => state.orders);
 
   useEffect(() => {
-    if (!feeds) {
-      dispatch(fetchFeeds());
-    }
+    dispatch(fetchFeeds());
     const wsUrl =
       process.env.BURGER_API_URL?.replace('https', 'wss').replace('/api', '') +
       '/orders/all';
@@ -27,7 +25,7 @@ export const Feed: FC = () => {
     return () => {
       socket.close();
     };
-  }, [dispatch, feeds]);
+  }, [dispatch]);
 
   if (loading || !feeds) {
     return <Preloader />;

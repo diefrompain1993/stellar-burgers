@@ -9,9 +9,7 @@ export const ProfileOrders: FC = () => {
   const orders: TOrder[] = useSelector((state) => state.orders.userOrders);
 
   useEffect(() => {
-    if (!orders.length) {
-      dispatch(fetchUserOrders());
-    }
+    dispatch(fetchUserOrders());
     const wsUrl =
       process.env.BURGER_API_URL?.replace('https', 'wss').replace('/api', '') +
       `/orders?token=${localStorage.getItem('refreshToken')}`;
@@ -27,7 +25,7 @@ export const ProfileOrders: FC = () => {
     return () => {
       socket.close();
     };
-  }, [dispatch, orders.length]);
+  }, [dispatch]);
 
   return <ProfileOrdersUI orders={orders} />;
 };
