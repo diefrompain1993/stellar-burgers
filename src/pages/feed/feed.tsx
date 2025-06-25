@@ -10,12 +10,10 @@ export const Feed: FC = () => {
 
   useEffect(() => {
     dispatch(fetchFeeds());
-    const wsUrl =
-      process.env.BURGER_API_URL?.replace('https', 'wss').replace('/api', '') +
-      '/orders/all';
-    const socket = new WebSocket(
-      wsUrl || 'wss://norma.nomoreparties.space/orders/all'
-    );
+    const wsBase = process.env.BURGER_API_URL
+      ? process.env.BURGER_API_URL.replace('https', 'wss').replace('/api', '')
+      : 'wss://norma.nomoreparties.space';
+    const socket = new WebSocket(`${wsBase}/orders/all`);
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
       if (data.success) {

@@ -8,16 +8,18 @@ import { getCookie } from '../../utils/cookie';
 export const ProfileOrders: FC = () => {
   const dispatch = useDispatch();
   const orders: TOrder[] = useSelector((state) => state.orders.userOrders);
+  const { isAuthChecked } = useSelector((state) => state.user);
 
   useEffect(() => {
+    if (!isAuthChecked) {
+      return;
+    }
     dispatch(fetchUserOrders());
     const token = getCookie('accessToken')?.replace('Bearer ', '');
-    const wsUrl =
-      process.env.BURGER_API_URL?.replace('https', 'wss').replace('/api', '') +
-      `/orders?token=${token}`;
-    const socket = new WebSocket(
-      wsUrl || 'wss://norma.nomoreparties.space/orders'
-    );
+    const wsBase = process.env.BURGER_API_URL
+      ? process.env.BURGER_API_URL.replace('https', 'wss').replace('/api', '')
+      : 'wss://norma.nomoreparties.space';
+    const socket = new WebSocket(`${wsBase}/orders?token=${token}`);
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
       if (data.success) {
@@ -27,7 +29,7 @@ export const ProfileOrders: FC = () => {
     return () => {
       socket.close();
     };
-  }, [dispatch]);
+  }, [dispatch, isAuthChecked]);
 
   return <ProfileOrdersUI orders={orders} />;
 };
