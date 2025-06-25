@@ -58,12 +58,14 @@ interface UserState {
   user: TUser | null;
   loading: boolean;
   error: string | null;
+  isAuthChecked: boolean;
 }
 
 const initialState: UserState = {
   user: null,
   loading: false,
-  error: null
+  error: null,
+  isAuthChecked: false
 };
 
 const userSlice = createSlice({
@@ -72,28 +74,36 @@ const userSlice = createSlice({
   reducers: {
     resetError: (state) => {
       state.error = null;
+    },
+    setAuthChecked: (state, action: PayloadAction<boolean>) => {
+      state.isAuthChecked = action.payload;
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUser.pending, (state) => {
         state.loading = true;
+        state.isAuthChecked = false;
       })
       .addCase(fetchUser.fulfilled, (state, action: PayloadAction<TUser>) => {
         state.loading = false;
         state.user = action.payload;
+        state.isAuthChecked = true;
       })
       .addCase(fetchUser.rejected, (state) => {
         state.loading = false;
         state.user = null;
+        state.isAuthChecked = true;
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.isAuthChecked = false;
       })
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<TUser>) => {
         state.loading = false;
         state.user = action.payload;
+        state.isAuthChecked = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -102,20 +112,24 @@ const userSlice = createSlice({
           msg === 'email or password are incorrect'
             ? 'Неправильный пароль'
             : 'Ошибка авторизации';
+        state.isAuthChecked = true;
       })
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
+        state.isAuthChecked = false;
       })
       .addCase(
         registerUser.fulfilled,
         (state, action: PayloadAction<TUser>) => {
           state.loading = false;
           state.user = action.payload;
+          state.isAuthChecked = true;
         }
       )
       .addCase(registerUser.rejected, (state) => {
         state.loading = false;
         state.error = 'Ошибка регистрации';
+        state.isAuthChecked = true;
       })
       .addCase(updateUser.pending, (state) => {
         state.loading = true;
@@ -131,10 +145,11 @@ const userSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
+        state.isAuthChecked = true;
       });
   }
 });
 
-export const { resetError } = userSlice.actions;
+export const { resetError, setAuthChecked } = userSlice.actions;
 
 export default userSlice.reducer;

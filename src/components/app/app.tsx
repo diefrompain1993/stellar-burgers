@@ -5,6 +5,10 @@ import {
   useLocation,
   Location
 } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from '../../services/store';
+import { fetchUser, setAuthChecked } from '../../services/user/slice';
+import { getCookie } from '../../utils/cookie';
 import {
   ConstructorPage,
   Feed,
@@ -30,6 +34,16 @@ import {
 const App = () => {
   const location = useLocation();
   const background = (location.state as { background?: Location })?.background;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const hasToken = getCookie('accessToken') || localStorage.getItem('refreshToken');
+    if (hasToken) {
+      dispatch(fetchUser());
+    } else {
+      dispatch(setAuthChecked(true));
+    }
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>

@@ -11,8 +11,12 @@ export const ProtectedRoute: FC<ProtectedRouteProps> = ({
   onlyUnAuth = false,
   element
 }) => {
-  const user = useSelector((state) => state.user.user);
+  const { user, isAuthChecked } = useSelector((state) => state.user);
   const location = useLocation();
+
+  if (!isAuthChecked) {
+    return null;
+  }
 
   if (onlyUnAuth && user) {
     const from = (location.state as { from?: string })?.from || '/';
