@@ -3,6 +3,7 @@ import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { fetchUserOrders, setUserOrders } from '../../services/orders/slice';
+import { getCookie } from '../../utils/cookie';
 
 export const ProfileOrders: FC = () => {
   const dispatch = useDispatch();
@@ -10,9 +11,10 @@ export const ProfileOrders: FC = () => {
 
   useEffect(() => {
     dispatch(fetchUserOrders());
+    const token = getCookie('accessToken')?.replace('Bearer ', '');
     const wsUrl =
       process.env.BURGER_API_URL?.replace('https', 'wss').replace('/api', '') +
-      `/orders?token=${localStorage.getItem('refreshToken')}`;
+      `/orders?token=${token}`;
     const socket = new WebSocket(
       wsUrl || 'wss://norma.nomoreparties.space/orders'
     );
