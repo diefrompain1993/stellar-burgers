@@ -1,11 +1,4 @@
-import {
-  FC,
-  SyntheticEvent,
-  useState,
-  Dispatch,
-  SetStateAction,
-  useEffect
-} from 'react';
+import { FC, SyntheticEvent, useState, Dispatch, SetStateAction } from 'react';
 import { LoginUI } from '@ui-pages';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
@@ -18,10 +11,6 @@ export const Login: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const error = useSelector((state) => state.user.error);
-
-  useEffect(() => {
-    dispatch(resetError());
-  }, [dispatch]);
 
   const handleEmailChange: Dispatch<SetStateAction<string>> = (value) => {
     setEmail((prev) => (typeof value === 'function' ? value(prev) : value));

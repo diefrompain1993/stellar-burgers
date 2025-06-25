@@ -7,14 +7,11 @@ import {
 } from '@api';
 import { TOrdersData, TOrder } from '@utils-types';
 
-export const fetchFeeds = createAsyncThunk(
-  'orders/feeds',
-  async () => await getFeedsApi()
-);
+export const fetchFeeds = createAsyncThunk('orders/feeds', getFeedsApi);
 
 export const fetchUserOrders = createAsyncThunk(
   'orders/userOrders',
-  async () => await getOrdersApi()
+  getOrdersApi
 );
 
 export const fetchOrderInfo = createAsyncThunk(

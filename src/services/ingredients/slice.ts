@@ -4,7 +4,7 @@ import { TIngredient } from '@utils-types';
 
 export const fetchIngredients = createAsyncThunk(
   'ingredients/fetch',
-  async () => await getIngredientsApi()
+  getIngredientsApi
 );
 
 interface IngredientsState {
