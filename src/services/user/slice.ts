@@ -110,7 +110,7 @@ const userSlice = createSlice({
         const msg = action.payload as string | undefined;
         state.error =
           msg === 'email or password are incorrect'
-            ? 'Неправильный пароль'
+            ? 'Неверный Email или пароль'
             : 'Ошибка авторизации';
         state.isAuthChecked = true;
       })
