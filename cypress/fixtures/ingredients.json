@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "1",
+      "name": "Тестовая булка",
+      "type": "bun",
+      "proteins": 0,
+      "fat": 0,
+      "carbohydrates": 0,
+      "calories": 0,
+      "price": 100,
+      "image": "bun.png",
+      "image_mobile": "bun.png",
+      "image_large": "bun.png"
+    },
+    {
+      "_id": "2",
+      "name": "Тестовый ингредиент",
+      "type": "main",
+      "proteins": 0,
+      "fat": 0,
+      "carbohydrates": 0,
+      "calories": 0,
+      "price": 50,
+      "image": "sauce.png",
+      "image_mobile": "sauce.png",
+      "image_large": "sauce.png"
+    }
+  ]
+}
