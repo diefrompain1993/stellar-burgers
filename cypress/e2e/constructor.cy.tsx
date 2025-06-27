@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 describe('Burger constructor page', () => {
-  const API = 'https://norma.nomoreparties.space/api';
+  const API = '**/api';
 
   beforeEach(() => {
     cy.intercept('GET', `${API}/ingredients`, {
