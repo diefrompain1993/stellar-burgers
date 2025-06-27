@@ -9,6 +9,11 @@ describe('Burger constructor page', () => {
     cy.wait('@getIngredients');
   });
 
+  afterEach(() => {
+    cy.clearCookies();
+    cy.clearLocalStorage();
+  });
+
   it('should add ingredients to constructor', () => {
     cy.contains('li', 'Краторная булка').within(() => {
       cy.contains('button', 'Добавить').click();
@@ -25,6 +30,7 @@ describe('Burger constructor page', () => {
   it('should open and close ingredient modal', () => {
     cy.contains('li', 'Краторная булка').click();
     cy.get('[data-testid="modal"]').should('exist');
+    cy.get('[data-testid="modal"]').contains('Краторная булка');
     cy.get('[data-testid="close"]').click();
     cy.get('[data-testid="modal"]').should('not.exist');
   });
