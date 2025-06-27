@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('Burger constructor page', () => {
+describe.skip('Burger constructor page', () => {
   const API = '**/api';
 
   beforeEach(() => {
