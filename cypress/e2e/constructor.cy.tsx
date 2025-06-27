@@ -1,10 +1,18 @@
 /// <reference types="cypress" />
 
 describe('Burger constructor page', () => {
+  const API = 'https://norma.nomoreparties.space/api';
+
   beforeEach(() => {
-    cy.intercept('GET', '**/ingredients', { fixture: 'ingredients.json' }).as('getIngredients');
-    cy.intercept('GET', '**/auth/user', { fixture: 'user.json' }).as('getUser');
-    cy.intercept('POST', '**/orders', { fixture: 'order.json' }).as('createOrder');
+    cy.intercept('GET', `${API}/ingredients`, {
+      fixture: 'ingredients.json'
+    }).as('getIngredients');
+    cy.intercept('GET', `${API}/auth/user`, { fixture: 'user.json' }).as(
+      'getUser'
+    );
+    cy.intercept('POST', `${API}/orders`, { fixture: 'order.json' }).as(
+      'createOrder'
+    );
     cy.visit('/');
     cy.wait('@getIngredients');
   });
@@ -15,7 +23,7 @@ describe('Burger constructor page', () => {
   });
 
   it('should add ingredients to constructor', () => {
-    cy.contains('li', 'Краторная булка').within(() => {
+    cy.contains('li', 'Краторная булка N-200i').within(() => {
       cy.contains('button', 'Добавить').click();
     });
     cy.contains('li', 'Соус Spicy-X').within(() => {
@@ -28,15 +36,15 @@ describe('Burger constructor page', () => {
   });
 
   it('should open and close ingredient modal', () => {
-    cy.contains('li', 'Краторная булка').click();
+    cy.contains('li', 'Краторная булка N-200i').click();
     cy.get('[data-testid="modal"]').should('exist');
-    cy.get('[data-testid="modal"]').contains('Краторная булка');
+    cy.get('[data-testid="modal"]').contains('Краторная булка N-200i');
     cy.get('[data-testid="close"]').click();
     cy.get('[data-testid="modal"]').should('not.exist');
   });
 
   it('should close ingredient modal by overlay click', () => {
-    cy.contains('li', 'Краторная булка').click();
+    cy.contains('li', 'Краторная булка N-200i').click();
     cy.get('[data-testid="modal"]').should('exist');
     cy.get('[data-testid="overlay"]').click('center');
     cy.get('[data-testid="modal"]').should('not.exist');
@@ -48,7 +56,7 @@ describe('Burger constructor page', () => {
       win.document.cookie = 'accessToken=test';
     });
 
-    cy.contains('li', 'Краторная булка').within(() => {
+    cy.contains('li', 'Краторная булка N-200i').within(() => {
       cy.contains('button', 'Добавить').click();
     });
     cy.contains('li', 'Соус Spicy-X').within(() => {

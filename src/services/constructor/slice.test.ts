@@ -1,4 +1,8 @@
-import reducer, { addIngredient, removeIngredient, moveIngredientUp } from './slice';
+import reducer, {
+  addIngredient,
+  removeIngredient,
+  moveIngredientUp
+} from './slice';
 import { TIngredient, TConstructorIngredient } from '@utils-types';
 
 describe('constructor slice', () => {

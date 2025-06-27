@@ -19,18 +19,27 @@ const item: TIngredient = {
 
 describe('ingredients slice', () => {
   it('should handle fetchIngredients.pending', () => {
-    const state = reducer(initialState, fetchIngredients.pending('', undefined));
+    const state = reducer(
+      initialState,
+      fetchIngredients.pending('', undefined)
+    );
     expect(state.loading).toBe(true);
   });
 
   it('should handle fetchIngredients.fulfilled', () => {
-    const state = reducer(initialState, fetchIngredients.fulfilled([item], '', undefined));
+    const state = reducer(
+      initialState,
+      fetchIngredients.fulfilled([item], '', undefined)
+    );
     expect(state.loading).toBe(false);
     expect(state.items).toEqual([item]);
   });
 
   it('should handle fetchIngredients.rejected', () => {
-    const state = reducer(initialState, fetchIngredients.rejected(null, '', undefined));
+    const state = reducer(
+      initialState,
+      fetchIngredients.rejected(null, '', undefined)
+    );
     expect(state.loading).toBe(false);
     expect(state.error).toBe('Не удалось загрузить ингредиенты');
   });
