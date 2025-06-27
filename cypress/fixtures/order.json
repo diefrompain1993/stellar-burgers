@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "order": {
+    "_id": "order1",
+    "number": 1234,
+    "status": "done",
+    "name": "Test Burger",
+    "createdAt": "2021-01-01T00:00:00.000Z",
+    "updatedAt": "2021-01-01T00:00:00.000Z",
+    "ingredients": ["60d3b41abdacab0026a733c6"]
+  },
+  "name": "Test Burger"
+}
