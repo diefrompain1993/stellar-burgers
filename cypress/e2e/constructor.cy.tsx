@@ -1,20 +1,16 @@
 describe('Burger constructor flow', () => {
   beforeEach(() => {
-    cy.intercept(
-      'GET',
-      '**/ingredients',
-      { fixture: 'ingredients.json' }
-    ).as('getIngredients');
-    cy.intercept(
-      'GET',
-      '**/auth/user',
-      { fixture: 'user.json' }
-    ).as('getUser');
-    cy.intercept(
-      'POST',
-      '**/orders',
-      { fixture: 'order.json' }
-    ).as('postOrder');
+    cy.setCookie('accessToken', 'test');
+    cy.window().then((win) => {
+      win.localStorage.setItem('refreshToken', 'test');
+    });
+
+    const api = 'https://norma.nomoreparties.space/api';
+    cy.intercept('GET', `${api}/ingredients`, { fixture: 'ingredients.json' }).as(
+      'getIngredients'
+    );
+    cy.intercept('POST', `${api}/orders`, { fixture: 'order.json' }).as('postOrder');
+
     cy.visit('/');
     cy.wait('@getIngredients');
     cy.window().its('store').then((store) => {
@@ -28,7 +24,7 @@ describe('Burger constructor flow', () => {
   });
 
   it('should add ingredient to constructor', () => {
-    cy.get('[data-cy=add-button]').first().click();
+    cy.get('[data-cy=add-button]').first().find('button').click();
     cy.get('[data-cy=constructor-item]').should('have.length', 1);
   });
 
@@ -42,15 +38,13 @@ describe('Burger constructor flow', () => {
   });
 
   it('should create order and clear constructor', () => {
-    cy.setCookie('accessToken', 'test');
-    cy.window().then((win) => win.localStorage.setItem('refreshToken', 'test'));
-    cy.get('[data-cy=add-button]').first().click();
+    cy.get('[data-cy=add-button]').first().find('button').click();
+
     cy.contains('Оформить заказ').click();
     cy.wait('@postOrder');
     cy.get('[data-cy=order-number]').should('contain', '1234');
+
     cy.get('[data-cy=modal-close]').click();
     cy.get('[data-cy=constructor-item]').should('not.exist');
-    cy.clearCookie('accessToken');
-    cy.window().then((win) => win.localStorage.removeItem('refreshToken'));
   });
 });
