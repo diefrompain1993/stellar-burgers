@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "order": {
+    "_id": "abc123",
+    "status": "done",
+    "name": "Test Burger",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z",
+    "number": 1234,
+    "ingredients": ["1", "2", "3"]
+  }
+}
