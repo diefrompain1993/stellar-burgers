@@ -8,6 +8,10 @@ import { BrowserRouter as Router } from 'react-router-dom';
 const container = document.getElementById('root') as HTMLElement;
 const root = ReactDOMClient.createRoot(container!);
 
+if (window && (window as any).Cypress) {
+  (window as any).store = store;
+}
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
