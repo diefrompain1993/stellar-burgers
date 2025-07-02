@@ -30,6 +30,15 @@ describe('Burger constructor', () => {
     cy.get('[data-testid="modal"]').should('not.exist');
   });
 
+  it('should close ingredient modal by overlay click', () => {
+    cy.visit('/');
+    cy.wait('@getIngredients');
+    cy.get('[data-testid="ingredient-card"]').first().click();
+    cy.contains('Детали ингредиента');
+    cy.get('[data-testid="modal-overlay"]').click('topLeft', { force: true });
+    cy.get('[data-testid="modal"]').should('not.exist');
+  });
+
   it('should create order and clear constructor', () => {
     cy.setCookie('accessToken', 'test');
     cy.window().then((win) => win.localStorage.setItem('refreshToken', 'test'));
