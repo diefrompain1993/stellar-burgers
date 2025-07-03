@@ -11,14 +11,14 @@ import { BurgerConstructorElement, Modal } from '@components';
 import { Preloader, OrderDetailsUI } from '@ui';
 
 export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
-  constructorItems,
+  constructorItems = { bun: null, ingredients: [] },
   orderRequest,
   price,
   orderModalData,
   onOrderClick,
   closeOrderModal
 }) => (
-  <section className={styles.burger_constructor}>
+  <section className={styles.burger_constructor} data-testid='constructor-drop'>
     {constructorItems.bun ? (
       <div className={`${styles.element} mb-4 mr-4`}>
         <ConstructorElement
@@ -37,7 +37,8 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       </div>
     )}
     <ul className={styles.elements}>
-      {constructorItems.ingredients.length > 0 ? (
+      {constructorItems.ingredients &&
+      constructorItems.ingredients.length > 0 ? (
         constructorItems.ingredients.map(
           (item: TConstructorIngredient, index: number) => (
             <BurgerConstructorElement

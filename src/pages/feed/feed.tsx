@@ -1,15 +1,38 @@
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { useDispatch, useSelector } from '../../services/store';
+import { fetchFeeds, setFeeds } from '../../services/orders/slice';
 
 export const Feed: FC = () => {
-  /** TODO: взять переменную из стора */
-  const orders: TOrder[] = [];
+  const dispatch = useDispatch();
+  const { feeds, loading } = useSelector((state) => state.orders);
 
-  if (!orders.length) {
+  useEffect(() => {
+    dispatch(fetchFeeds());
+    const wsBase = process.env.BURGER_API_URL
+      ? process.env.BURGER_API_URL.replace('https', 'wss').replace('/api', '')
+      : 'wss://norma.nomoreparties.space';
+    const socket = new WebSocket(`${wsBase}/orders/all`);
+    socket.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      if (data.success) {
+        dispatch(setFeeds(data));
+      }
+    };
+    return () => {
+      socket.close();
+    };
+  }, [dispatch]);
+
+  if (loading || !feeds) {
     return <Preloader />;
   }
 
-  <FeedUI orders={orders} handleGetFeeds={() => {}} />;
+  return (
+    <FeedUI
+      orders={feeds.orders}
+      handleGetFeeds={() => dispatch(fetchFeeds())}
+    />
+  );
 };
